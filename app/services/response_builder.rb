@@ -1,5 +1,5 @@
 # Usage: ResponseBuilder.new(params_hash)
-# The goal of this class is to use all the components involved in building the response.
+# The goal of this class is to use all the components involved in building the required response.
 
 class MissingParametersError < StandardError
   def initialize(missing_keys)
@@ -23,13 +23,26 @@ class ResponseBuilder
     supplier_responses = {}
 
     parsed_suppliers.each do |supplier|
+      puts "_________________"
+      puts supplier
+
       key = CacheKeyBuilder.new(params, supplier).build
 
       if cache_store
         supplier_responses[supplier] = if cache_store.get(key)
+            
+          puts "---------------------------"
+          puts "Getting response from cache"
+          puts "---------------------------"
+
           cache_store.get(key)
         else
           resp = supplier_response(supplier)
+
+          puts "-------------------------"
+          puts "Setting response in cache"
+          puts "-------------------------"
+
           cache_store.set(key, resp)
           resp
         end

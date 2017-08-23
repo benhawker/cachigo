@@ -6,9 +6,7 @@
 #   c = CacheKeyBuilder.new(params_hash, :supplier1)
 #   c.build
 #
-# Return value:
-#   ....
-#
+# Sample return: "01012017020012017istanbul2supplier1"
 
 class CacheKeyBuilder
   
@@ -23,5 +21,5 @@ class CacheKeyBuilder
     params.delete(:suppliers)
     (params.values.join('') + supplier.to_s).downcase
   end
-  
+
 end

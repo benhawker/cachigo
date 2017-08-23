@@ -1,7 +1,5 @@
 # Cachigo - Hotel Pricing API
 
-===================
-
 ### Testing:
 
 Run the specs with `bundle exec rspec`.
@@ -35,6 +33,7 @@ Expected response:
 Make a GET request to:
 ````
 http://localhost:9999/hotels?checkin=dummy_value&checkout=dummy_value&destination=instanbul&guests=2
+
 ```
 
 Expected response:

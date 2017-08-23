@@ -40,6 +40,8 @@ describe ResponseBuilder do
   subject { described_class.new(params: params, cache_store: cache) }
 
   before do 
+    subject.class::SUPPLIERS.delete(:supplier4)
+
     allow(subject).to receive(:supplier_response).with(:supplier1) { supplier1_response }
     allow(subject).to receive(:supplier_response).with(:supplier2) { supplier2_response }
     allow(subject).to receive(:supplier_response).with(:supplier3) { supplier3_response }
@@ -111,17 +113,24 @@ describe ResponseBuilder do
       end
 
       it "retrieves the value from the cache if present" do
-        expect(subject.cache_store).to receive(:get).once.with("01012017020012017istanbul2supplier1")
-        expect(subject.cache_store).to receive(:get).once.with("01012017020012017istanbul2supplier2")
+        subject.build
 
+        expect(subject.cache_store).to receive(:get).twice.with("01012017020012017istanbul2supplier1") { supplier1_response }
+        expect(subject.cache_store).to receive(:get).twice.with("01012017020012017istanbul2supplier2") { supplier2_response }
+
+        params[:suppliers] = 'supplier1,supplier2'
         subject.build
       end
 
       it "does not retrieve the value the cache_store from when a param has been changed" do
         params[:destination] = "Singapore"
-        # expect(subject.cache_store).not_to receive(:get).with("01012017020012017singapore2supplier1")
-        expect(subject.cache_store).to receive(:set).once.with("01012017020012017singapore2supplier1", {:abcd=>299.9, :mnop=>340.33})
+
+        expect(subject.cache_store).to receive(:get).with("01012017020012017singapore2supplier1") { nil }
+        expect(subject.cache_store).to receive(:set).once.with("01012017020012017singapore2supplier1", supplier1_response)
         
+        expect(subject.cache_store).to receive(:get).with("01012017020012017singapore2supplier2") { nil }
+        expect(subject.cache_store).to receive(:set).once.with("01012017020012017singapore2supplier2", supplier2_response)
+
         subject.build
       end
     end

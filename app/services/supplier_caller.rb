@@ -1,6 +1,6 @@
 # +SupplierCaller+ Makes a request to the supplier api and returns a parsed response.
 #
-# Note: At present there is no error handling.
+# Note: At present there is very limited error handling.
 #
 # Usage: 
 #   caller = SupplierCaller.new(:supplier1)
@@ -19,6 +19,9 @@ class SupplierCaller
   end
 
   def call
-    self.class.get(SUPPLIERS[supplier]).parsed_response
+    resp = self.class.get(SUPPLIERS[supplier])
+  
+    # If the supplier api does not return 200 do not return the parsed response.
+    resp["status"] && resp["status"] != 200 ? {} : resp.parsed_response
   end
 end 
