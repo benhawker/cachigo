@@ -31,7 +31,7 @@ Expected response:
 ```
 
 Make a GET request to:
-````
+```
 http://localhost:9999/hotels?checkin=dummy_value&checkout=dummy_value&destination=instanbul&guests=2
 
 ```
