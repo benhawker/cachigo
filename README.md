@@ -1,3 +1,66 @@
+# Cachigo - Hotel Pricing API
+
+===================
+
+### Testing:
+
+Run the specs with `bundle exec rspec`.
+
+
+
+### Usage:
+
+Install project dependencies:
+```
+bundle install
+```
+
+Run the server (serving on PORT 9999):
+```
+$ bundle exec rails s
+```
+
+Make a GET request to:
+```
+http://localhost:9999/hotels
+```
+
+Expected response:
+```
+{
+  "error": "Payload missing required keys: checkin, checkout, destination, guests"
+}
+```
+
+Make a GET request to:
+````
+http://localhost:9999/hotels?checkin=dummy_value&checkout=dummy_value&destination=instanbul&guests=2
+```
+
+Expected response:
+```
+{
+  "data": [
+    {
+      "id": "abcd",
+      "price": 299.9,
+      "supplier": "supplier2"
+    },
+    {
+      "id": "defg",
+      "price": 320.49,
+      "supplier": "supplier3"
+    },
+    {
+      "id": "mnop",
+      "price": 288.3,
+      "supplier": "supplier1"
+    }
+  ]
+}
+```
+===================
+
 ## Requirements
 
 ### Request
